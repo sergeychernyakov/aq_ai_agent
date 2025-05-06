@@ -1,11 +1,14 @@
 # src/aq_mcp_server.py
+"""
+Aquarium MCP tool definitions and HTTP endpoint wrappers.
+"""
 
-from typing import Any, Optional, List, Dict
+from typing import Any
 import inspect
 from fastapi import APIRouter, Query
 from mcp.server.fastmcp import FastMCP
-from aquarium.helpers.logger import get_logger
-from aquarium.clients.aquarium_client import AquariumClient
+from aquarium.clients.aquarium_client import AquariumClient  # pylint: disable=import-error
+from src.helpers.logger import get_logger
 
 # Initialize FastMCP server
 mcp = FastMCP("aquarium")
@@ -45,7 +48,7 @@ async def get_customers_by_email(email: str) -> list[dict[str, Any]] | str:
 
     if not customers:
         return f"No customers found for email: {email}"
-    logger.debug(f"Retrieved customers for {email}: {customers}")
+    logger.debug("Retrieved customers for %s: %s", email, customers)
     return [_to_dict(cust) for cust in customers]
 
 

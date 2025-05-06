@@ -23,7 +23,7 @@ Dependencies
 
 from __future__ import annotations
 import asyncio
-from mcp_agent.core.fastagent import FastAgent
+from mcp_agent.core.fastagent import FastAgent  # pylint: disable=import-error
 
 # --------------------------------------------------------------------------- #
 # Build the agent

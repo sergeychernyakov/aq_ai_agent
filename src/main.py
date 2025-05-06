@@ -1,11 +1,14 @@
 # src/main.py
+"""
+Main FastAPI application integrating SSE/MCP and Aquarium API routes.
+"""
 
 from fastapi import FastAPI, Request
-from fastapi.staticfiles import StaticFiles
 from mcp.server.sse import SseServerTransport
 from starlette.routing import Mount
 from src.aq_mcp_server import mcp, router as aquarium_router
 from src.config import config
+from src.routes import router as general_router
 
 # Create FastAPI application with metadata
 app = FastAPI(
@@ -33,7 +36,7 @@ def messages_docs():
     Note: This route is for documentation purposes only.
     The actual implementation is handled by the SSE transport.
     """
-    pass  # This is just for documentation, the actual handler is mounted above
+    pass  # pylint: disable=unnecessary-pass  # This is just for documentation, the actual handler is mounted above
 
 
 @app.get("/sse", tags=["MCP"], include_in_schema=False)
@@ -45,20 +48,18 @@ async def handle_sse(request: Request):
     and forwards communication to the Model Context Protocol server.
     """
     # Use sse.connect_sse to establish an SSE connection with the MCP server
-    async with sse.connect_sse(request.scope, request.receive, request._send) as (
+    async with sse.connect_sse(request.scope, request.receive, request._send) as (  # pylint: disable=protected-access
         read_stream,
         write_stream,
     ):
         # Run the MCP server with the established streams
-        await mcp._mcp_server.run(
+        await mcp._mcp_server.run(  # pylint: disable=protected-access
             read_stream,
             write_stream,
-            mcp._mcp_server.create_initialization_options(),
+            mcp._mcp_server.create_initialization_options(),  # pylint: disable=protected-access
         )
 
 # Include Aquarium API endpoints in the main app
 app.include_router(aquarium_router)
-
-# Import routes at the end to avoid circular imports
-# This ensures all routes are registered to the app
-import src.routes  # noqa
+# Include general application routes
+app.include_router(general_router)

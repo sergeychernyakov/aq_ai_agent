@@ -1,8 +1,9 @@
 # src/routes.py
-
+"""
+General application routes (root, about, status).
+"""
 from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse
 from fastapi import APIRouter
-from src.main import app
 
 # Create a router with a general tag for API documentation organization
 router = APIRouter(tags=["General"])
@@ -36,7 +37,3 @@ async def status():
         "version": "0.1.0",
     }
     return JSONResponse(status_info)
-
-
-# Include the router in the main application
-app.include_router(router)
