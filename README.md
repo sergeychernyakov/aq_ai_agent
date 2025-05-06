@@ -33,7 +33,7 @@ This project demonstrates how to integrate an Aquarium CRM SOAP API (via the `cr
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your_username/aq_ai_agent.git
+   git clone https://github.com/sergeychernyakov/aq_ai_agent.git
    cd aq_ai_agent
    ```
 
@@ -145,4 +145,3 @@ pytest
 
 **Sergey Chernyakov**  
 📬 Telegram: [@AIBotsTech](https://t.me/AIBotsTech)
-
