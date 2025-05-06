@@ -1,6 +1,7 @@
 # src/aq_mcp_server.py
 
 from typing import Any, Optional, List, Dict
+import inspect
 from fastapi import APIRouter, Query
 from mcp.server.fastmcp import FastMCP
 from aquarium.helpers.logger import get_logger
@@ -203,6 +204,12 @@ async def get_detail_values_by_field_ids(
 # HTTP wrappers for Aquarium MCP tools
 # --------------------------------------------------------------------------- #
 
+async def _maybe_await(result):
+    """Await the result if it's awaitable, otherwise return it directly."""
+    if inspect.isawaitable(result):
+        return await result
+    return result
+
 @router.get(
     "/customers",
     operation_id="get_customers_by_email",
@@ -210,7 +217,7 @@ async def get_detail_values_by_field_ids(
 )
 async def customers_by_email_route(email: str):
     """HTTP wrapper that exposes get_customers_by_email as a REST endpoint."""
-    return await get_customers_by_email(email)
+    return await _maybe_await(get_customers_by_email(email))
 
 @router.get(
     "/cases/by-lead/{lead_id}",
