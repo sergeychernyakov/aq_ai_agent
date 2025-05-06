@@ -20,6 +20,7 @@ class Config:
 
     DEBUG: bool = False  # pylint: disable=invalid-name
     APP_ENV = os.getenv("APP_ENV")
+    GROK_URL: str = os.getenv("GROK_URL", "https://127c-156-253-249-23.ngrok-free.app")
 
 @dataclass
 class DevelopmentConfig(Config):
